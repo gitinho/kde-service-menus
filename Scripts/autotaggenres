@@ -8,7 +8,7 @@ import Levenshtein
 if len(os.sys.argv) < 2:
     print("usage: autotaggenres <file>")
 else:
-    d = discogs_client.Client('AutotagGenres/0.1', user_token="axmzZAzWPRgNGfsnEkIbVoxFacFTdVDnNhXkoHTA")
+    d = discogs_client.Client('AutotagGenres/0.1', user_token="token_here")
     for f in range(len(os.sys.argv)-1):
         audio = mutagen.File(os.sys.argv[f+1])
         results = d.search(audio["album"][0], type='release')
