@@ -16,4 +16,5 @@ Python modules:
 The .desktop files go to `~/.local/share/kservices5/ServiceMenus/` for local user, or `/usr/share/kservices5/ServiceMenus/` for global
 
 The scripts go to /usr/bin/, or somewhere else in the path environmental variable
+
 Get a Discogs API personal token [here](https://www.discogs.com/settings/developers) and add it to the autotaggenres script
