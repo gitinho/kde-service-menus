@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=audio/*;
+Actions=AutotagGenres
+
+[Desktop Action AutotagGenres]
+Name=Autotag Genres with Discogs
+Icon=multimedia-audio-player
+Exec=autotaggenres %F

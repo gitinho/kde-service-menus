@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+
+import os
+import mutagen
+import discogs_client
+import Levenshtein
+
+if len(os.sys.argv) < 2:
+    print("usage: autotaggenres <file>")
+else:
+    d = discogs_client.Client('AutotagGenres/0.1', user_token="axmzZAzWPRgNGfsnEkIbVoxFacFTdVDnNhXkoHTA")
+    for f in range(len(os.sys.argv)-1):
+        audio = mutagen.File(os.sys.argv[f+1])
+        results = d.search(audio["album"][0], type='release')
+
+        score = 100
+        found = False
+        for i in range(5):
+            score = Levenshtein.distance(results[i].artists[0].name, audio["albumartist"][0])
+            if score <= 5:
+                found = True
+                break;
+
+        if not found:
+            msg="No match for: " + audio["title"][0] + " - " + audio["albumartist"][0] + " (" + audio["album"][0] + ")"
+            print(msg)
+            os.system('notify-send "Discogs genre autotag" "' + msg + '"')
+        else:
+
+            genres = results[i].genres
+            styles = results[i].styles
+
+            genreString = ""
+            for genre in genres:
+                genreString += genre
+                genreString += "; "
+            if type(styles) is list:
+            	for style in styles:
+                	genreString += style
+                	genreString += "; "
+
+            if genreString[-2:] == "; ":
+                genreString = genreString[:-2]
+
+
+            audio["genre"] = genreString
+            audio.save()
+
+            msg="(" + str(score) + ") " + audio["title"][0] + " - " + audio["albumartist"][0] + " (" + audio["album"][0] + "): "
+            print(msg + genreString)
+            os.system('notify-send "Discogs genre autotag" "' + msg + '\n' + genreString + '"')

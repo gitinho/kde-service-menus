@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=audio/*;
+Actions=LACAnalysis
+
+[Desktop Action LACAnalysis]
+Name=Analyse audio with LAC
+Icon=audio-headphones
+Exec=lacanalyse %F

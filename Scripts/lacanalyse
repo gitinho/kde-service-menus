@@ -1,0 +1,11 @@
+#!/bin/bash
+for audio in "$@"
+do
+	ffmpeg -i "$audio" "$audio.wav"
+	out=$(lac "$audio.wav")
+	notify-send "LAC analysis" "${out:164}"
+	if [[ ${out:164} != *"Clean"* ]]; then
+  		mv "$audio" "$audio".LOSSY
+	fi
+	rm "$audio.wav"
+done

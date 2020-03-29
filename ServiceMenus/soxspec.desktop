@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=audio/*;
+Actions=GenSpecWithSox
+
+[Desktop Action GenSpecWithSox]
+Name=Generate spectogram with sox
+Icon=kdenlive-show-audiothumb
+Exec=soxspec %F
