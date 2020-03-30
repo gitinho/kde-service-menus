@@ -7,38 +7,48 @@ import Levenshtein
 import webbrowser
 
 if len(os.sys.argv) < 2:
-    print("usage: openindiscogs <file>")
+	print("usage: openindiscogs <file>")
 else:
-    d = discogs_client.Client('OpenInBrowser/0.1', user_token="WDqHGzEcSurpwRWbgZPYRcMXDhutwPaVTXjArVZG")
-    for f in range(len(os.sys.argv)-1):
-        audio = mutagen.File(os.sys.argv[f+1])
-        results = d.search(audio["album"][0] + ' ' + audio["albumartist"][0], type='release')
-    
-        score = 0.0
-        max_score = 0.0
-        best_match = ""
-        found = False
-        i = 0
-        while i < min(50,len(results)):
-            try:
-                score = Levenshtein.ratio(results[i].artists[0].name.lower(), audio["albumartist"][0].lower())
-                if score > max_score:
-                    max_score = score
-                    best_match = results[i].artists[0].name
-                if score >= 0.7:
-                    found = True
-                    break;
-                i+=1
-            except:
-                print("Waiting 5 seconds...")
-                time.sleep(5)
-        
-        max_score *= 100
-        max_score_str = str(round(max_score)) + "%"
-    
-        if not found:
-            msg="No match for: " + audio["title"][0] + " - " + audio["albumartist"][0] + " (" + audio["album"][0] + ")\nBest match: (" + max_score_str + ") " + best_match
-            print(msg)
-            os.system('notify-send "Discogs genre autotag" "' + msg + '"')
-        else:
-            webbrowser.open(results[i].url, new=2)
+	d = discogs_client.Client('OpenInBrowser/0.1', user_token="WDqHGzEcSurpwRWbgZPYRcMXDhutwPaVTXjArVZG")
+	for f in range(len(os.sys.argv)-1):
+		audio = mutagen.File(os.sys.argv[f+1])
+		try:
+			album = audio["album"][0]
+			albumartist = audio["albumartist"][0]
+			title = audio["title"][0]
+		except:
+			audio = mutagen.easyid3.EasyID3(os.sys.argv[f+1])
+			album = str(audio["album"])
+			albumartist = str(audio["albumartist"])
+			title = str(audio["title"])
+
+		results = d.search(album + ' ' + albumartist, type='release')
+	
+		score = 0.0
+		max_score = 0.0
+		best_match = ""
+		found = False
+		i = 0
+		while i < min(50,len(results)):
+			try:
+				score = Levenshtein.ratio(results[i].artists[0].name.lower(), albumartist.lower())
+				if score > max_score:
+					max_score = score
+					best_match = results[i].artists[0].name
+				if score >= 0.7:
+					found = True
+					break;
+				i+=1
+			except:
+				print("Waiting 5 seconds...")
+				time.sleep(5)
+		
+		max_score *= 100
+		max_score_str = str(round(max_score)) + "%"
+	
+		if not found:
+			msg="No match for: " + title + " - " + albumartist + " (" + album + ")\nBest match: (" + max_score_str + ") " + best_match
+			print(msg)
+			os.system('notify-send "Discogs genre autotag" "' + msg + '"')
+		else:
+			webbrowser.open(results[i].url, new=2)

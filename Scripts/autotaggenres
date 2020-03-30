@@ -15,7 +15,16 @@ else:
 	while f < len(os.sys.argv)-1:
 		try:
 			audio = mutagen.File(os.sys.argv[f+1])
-			results = d.search(audio["album"][0] + ' ' + audio["albumartist"][0], type='release')
+			try:
+				album = audio["album"][0]
+				albumartist = audio["albumartist"][0]
+				title = audio["title"][0]
+			except:
+				audio = mutagen.easyid3.EasyID3(os.sys.argv[f+1])
+				album = str(audio["album"])
+				albumartist = str(audio["albumartist"])
+				title = str(audio["title"])
+			results = d.search(album + ' ' + albumartist, type='release')
 	
 			score = 0.0
 			max_score = 0.0
@@ -24,7 +33,7 @@ else:
 			i = 0
 			while i < min(50,len(results)):
 				try:
-					score = Levenshtein.ratio(results[i].artists[0].name.lower(), audio["albumartist"][0].lower())
+					score = Levenshtein.ratio(results[i].artists[0].name.lower(), albumartist.lower())
 					if score > max_score:
 						max_score = score
 						best_match = results[i].artists[0].name
@@ -40,7 +49,7 @@ else:
 			max_score_str = str(round(max_score)) + "%"
 	
 			if not found:
-				msg="No match for: " + audio["title"][0] + " - " + audio["albumartist"][0] + " (" + audio["album"][0] + ")\nBest match: (" + max_score_str + ") " + best_match
+				msg="No match for: " + title + " - " + albumartist + " (" + album + ")\nBest match: (" + max_score_str + ") " + best_match
 				print(msg)
 				os.system('notify-send "Discogs genre autotag" "' + msg + '"')
 			else:
@@ -67,7 +76,10 @@ else:
 	
 	
 				audio["genre"] = genreString
-				audio["year"] = str(release.year)
+				try:
+					audio["year"] = str(release.year)
+				except:
+					audio["date"] = str(release.year)
 				audio.save()
 	
 				msg=audio["title"][0] + " - " + audio["albumartist"][0] + " (" + audio["album"][0] + "): " + genreString + "\nMatch: (" + max_score_str + ") " + best_match 
