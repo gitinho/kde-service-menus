@@ -17,4 +17,4 @@ The .desktop files go to `~/.local/share/kservices5/ServiceMenus/` for local use
 
 The scripts go to /usr/bin/, or somewhere else in the path environmental variable
 
-Get a Discogs API personal token [here](https://www.discogs.com/settings/developers) and add it to the autotaggenres script
+Get a Discogs API personal token [here](https://www.discogs.com/settings/developers) and add it to the `autotaggenres` and `openindiscogs` scripts (The token included is outdated)
