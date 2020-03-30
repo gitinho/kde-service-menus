@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=audio/*;
+Actions=OpenInDiscogs
+
+[Desktop Action OpenInDiscogs]
+Name=Open album in Discogs
+Icon=media-optical
+Exec=openindiscogs %F
