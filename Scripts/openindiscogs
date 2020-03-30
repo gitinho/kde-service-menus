@@ -18,9 +18,9 @@ else:
 			title = audio["title"][0]
 		except:
 			audio = mutagen.easyid3.EasyID3(os.sys.argv[f+1])
-			album = str(audio["album"])
-			albumartist = str(audio["albumartist"])
-			title = str(audio["title"])
+			album = str(audio["album"][0])
+			albumartist = str(audio["albumartist"][0])
+			title = str(audio["title"][0])
 
 		results = d.search(album + ' ' + albumartist, type='release')
 	
