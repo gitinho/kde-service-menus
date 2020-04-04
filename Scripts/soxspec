@@ -1,5 +1,5 @@
 #!/bin/bash
 for audio in "$@"
 do
-	sox "$audio" -n spectrogram -o "${audio%.*}"_spectogram.png
+	sox "$audio" -n spectrogram -o "${audio%.*}"_spectogram."${audio##*.}".png
 done
