@@ -1,0 +1,29 @@
+import requests
+import json
+import os
+
+url = 'https://api.imagga.com/v2/tags'
+
+api_key = '---'
+api_secret = '---'
+
+for fi in range(len(os.sys.argv)-1):
+    image_path = os.sys.argv[fi+1]
+
+    response = requests.post(
+        url,
+        auth=(api_key, api_secret),
+        files={'image': open(image_path, 'rb')})
+    jsonresponse = response.json()
+    #print(json.dumps(jsonresponse, indent=4, sort_keys=True))
+
+    newname = ""
+    i = 0
+    for tag in jsonresponse['result']['tags']:
+        newname += tag['tag']['en']
+        newname += ', '
+        i+=1
+        if i > 10:
+            break
+    newname += os.path.splitext(image_path)[1]
+    os.rename(image_path, newname)
