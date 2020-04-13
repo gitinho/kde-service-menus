@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=image/*;
+Actions=TagPictures
+
+[Desktop Action TagPictures]
+Name=Tag picture and rename with imagga.com
+Icon=image-png
+Exec=tagpictures %F
