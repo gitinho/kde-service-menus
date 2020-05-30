@@ -1,0 +1,3 @@
+[submodule "Scripts/mrisa"]
+	path = Scripts/opt/imagetagger/mrisa
+	url = https://github.com/vivithemage/mrisa
