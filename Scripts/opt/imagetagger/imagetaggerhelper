@@ -15,5 +15,5 @@ def execute(process):
     os.system(f'python {process}')
 
 
-process_pool = multiprocessing.Pool(processes=4)
+process_pool = multiprocessing.Pool(processes=2)
 process_pool.map(execute, all_processes)

@@ -3,8 +3,19 @@ import json
 import os
 import time
 import base64
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-time.sleep(2)
+CHROME_PATH = '/usr/bin/chromium'
+CHROMEDRIVER_PATH = '/usr/bin/chromedriver'
+WINDOW_SIZE = "800,600"
+
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--window-size=%s" % WINDOW_SIZE)
+options.binary_location = CHROME_PATH
+
+time.sleep(1)
 
 urlbb = "https://api.imgbb.com/1/upload"
 url = "http://localhost:5000/search"
@@ -26,6 +37,7 @@ for fi in range(len(os.sys.argv)-1):
     print('uploaded!')
     response = rbb.json()
     image_url = response['data']['url']
+    delete_url = response['data']['delete_url']
 
     data["image_url"] = image_url
     headers = {'Content-type': 'application/json'}
@@ -40,5 +52,17 @@ for fi in range(len(os.sys.argv)-1):
     newname = best_guess + ' - ' + os.path.basename(image_path)
     print(newname)
     os.rename(image_path, newname)
+
+    print('deleting remote picture...')
+    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,
+                               options=options
+                               )
+    browser.get(delete_url)
+    linkElem = browser.find_element_by_css_selector('.delete-link')
+    linkElem.click()
+    linkElem = browser.find_element_by_css_selector('.btn')
+    linkElem.click()
+    browser.quit()
+    print('deleted!')
 
 os.system('pkill python')
