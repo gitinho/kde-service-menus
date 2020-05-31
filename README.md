@@ -11,6 +11,7 @@ Python modules:
 * `mutagen`
 * `discogs_client`
 * `Levenshtein`
+* `Selenium`
 
 ### Installation
 The .desktop files go to `~/.local/share/kservices5/ServiceMenus/` for local user, or `/usr/share/kservices5/ServiceMenus/` for global
